@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:uigitdev_stream_holder/src/stream_holder.dart';
+import 'package:uigitdev_stream_holder/src/stream_holder_builder.dart';
 
 void main() {
   runApp(
@@ -29,6 +30,8 @@ class MyApp extends StatelessWidget {
             children: [
               _countDataBuilder(),
               _countButton(),
+              _errorButton(),
+              _emptyButton(),
             ],
           ),
         ),
@@ -36,11 +39,35 @@ class MyApp extends StatelessWidget {
     );
   }
 
+  Widget _emptyButton() {
+    return Consumer<MainProvider>(
+      builder: (context, provider, _) {
+        return TextButton(
+          onPressed: () => provider.countStreamHolder.addData(null),
+          child: Text('Empty'),
+        );
+      },
+    );
+  }
+
+  Widget _errorButton() {
+    return Consumer<MainProvider>(
+      builder: (context, provider, _) {
+        return TextButton(
+          onPressed: () =>
+              provider.countStreamHolder.addError(ErrorHint('some-error')),
+          child: Text('Add Error'),
+        );
+      },
+    );
+  }
+
   Widget _countButton() {
     return Consumer<MainProvider>(
       builder: (context, provider, _) {
         return TextButton(
-          onPressed: () => provider.countStreamHolder.addData(Random().nextInt(500)),
+          onPressed: () =>
+              provider.countStreamHolder.addData(Random().nextInt(500)),
           child: Text('+'),
         );
       },
@@ -50,16 +77,16 @@ class MyApp extends StatelessWidget {
   Widget _countDataBuilder() {
     return Consumer<MainProvider>(
       builder: (context, provider, _) {
-        return StreamBuilder<int>(
-          stream: provider.countStreamHolder.stream,
-          initialData: provider.countStreamHolder.data,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return Text(snapshot.data!.toString());
-            } else if (snapshot.hasError) {
-              return Text(snapshot.error.toString());
-            } else {
-              return Text('Loading');
+        return StreamHolderBuilder<int?>(
+          streamHolder: provider.countStreamHolder,
+          builder: (context, state, data, error) {
+            switch (state) {
+              case StreamHolderState.placeholder:
+                return const CircularProgressIndicator();
+              case StreamHolderState.success:
+                return Text('success: $data');
+              case StreamHolderState.error:
+                return Text('error: ${error.toString()}');
             }
           },
         );
@@ -69,5 +96,5 @@ class MyApp extends StatelessWidget {
 }
 
 class MainProvider extends ChangeNotifier {
-  final countStreamHolder = StreamHolder<int>(0);
+  final countStreamHolder = StreamHolder<int?>(null);
 }

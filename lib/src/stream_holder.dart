@@ -23,4 +23,10 @@ class StreamHolder<T> {
     _data = data;
     _controller.add(data);
   }
+
+  /// Call it when the state does not succeed.
+  void addError(Object error) => _controller.addError(error);
+
+  /// Close the controller the end of the process.
+  void close() => _controller.close();
 }
