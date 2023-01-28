@@ -29,10 +29,22 @@ class MyApp extends StatelessWidget {
             children: [
               _countDataBuilder(),
               _countButton(),
+              _errorButton(),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _errorButton() {
+    return Consumer<MainProvider>(
+      builder: (context, provider, _) {
+        return TextButton(
+          onPressed: () => provider.countStreamHolder.addError(ErrorHint('some-error')),
+          child: Text('Add Error'),
+        );
+      },
     );
   }
 
