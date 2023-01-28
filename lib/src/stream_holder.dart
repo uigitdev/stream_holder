@@ -29,5 +29,4 @@ class StreamHolder<T> {
 
   /// Close the controller the end of the process.
   void close() => _controller.close();
-
 }

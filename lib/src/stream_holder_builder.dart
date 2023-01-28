@@ -6,7 +6,8 @@ import 'package:uigitdev_stream_holder/uigitdev_stream_holder.dart';
 enum StreamHolderState { placeholder, error, success }
 
 /// Custom builder [Widget], [Function] which will give the [context], [sate], [data] and [error].
-typedef AsyncStreamHolderBuilder<T> = Widget Function(BuildContext context, StreamHolderState state, T? data, Object? error);
+typedef AsyncStreamHolderBuilder<T> = Widget Function(
+    BuildContext context, StreamHolderState state, T? data, Object? error);
 
 /// Input type is a [StreamHolder] and [builder] these parameters are [required].
 class StreamHolderBuilder<T> extends StatelessWidget {
@@ -30,9 +31,11 @@ class StreamHolderBuilder<T> extends StatelessWidget {
       initialData: _streamHolder.data,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return _builder(context, StreamHolderState.success, snapshot.data, null);
+          return _builder(
+              context, StreamHolderState.success, snapshot.data, null);
         } else if (snapshot.hasError) {
-          return _builder(context, StreamHolderState.error, null, snapshot.error);
+          return _builder(
+              context, StreamHolderState.error, null, snapshot.error);
         } else {
           return _builder(context, StreamHolderState.placeholder, null, null);
         }

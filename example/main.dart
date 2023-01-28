@@ -54,7 +54,8 @@ class MyApp extends StatelessWidget {
     return Consumer<MainProvider>(
       builder: (context, provider, _) {
         return TextButton(
-          onPressed: () => provider.countStreamHolder.addError(ErrorHint('some-error')),
+          onPressed: () =>
+              provider.countStreamHolder.addError(ErrorHint('some-error')),
           child: Text('Add Error'),
         );
       },
@@ -65,7 +66,8 @@ class MyApp extends StatelessWidget {
     return Consumer<MainProvider>(
       builder: (context, provider, _) {
         return TextButton(
-          onPressed: () => provider.countStreamHolder.addData(Random().nextInt(500)),
+          onPressed: () =>
+              provider.countStreamHolder.addData(Random().nextInt(500)),
           child: Text('+'),
         );
       },
