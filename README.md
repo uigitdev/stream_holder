@@ -85,11 +85,11 @@ class MyApp extends StatelessWidget {
           streamHolder: provider.countStreamHolder,
           builder: (context, state, data, error) {
             switch (state) {
-              case StreamHolderState.placeholder:
+              case StreamHolderState.none:
                 return const CircularProgressIndicator();
-              case StreamHolderState.success:
+              case StreamHolderState.hasData:
                 return Text('success: $data');
-              case StreamHolderState.error:
+              case StreamHolderState.hasError:
                 return Text('error: ${error.toString()}');
             }
           },
